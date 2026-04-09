@@ -1,0 +1,610 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>TechStore</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Segoe UI', sans-serif;
+            background-color: #f8f9fa;
+            color: #333;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        .container {
+            width: 1140px;
+            max-width: 100%;
+            margin: 0 auto;
+            padding: 0 15px;
+        }
+
+
+        .navbar {
+            background-color: #4388e6;
+            padding: 12px 0;
+        }
+
+        .navbar .container {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .navbar-brand {
+            font-size: 1.4rem;
+            color: white;
+            font-weight: 700;
+            text-decoration: none;
+        }
+
+        .navbar-nav {
+            display: flex;
+            list-style: none;
+            gap: 5px;
+        }
+
+        .nav-link {
+            display: block;
+            padding: 7px 15px;
+            text-decoration: none;
+            color: rgba(255, 255, 255, 0.85);
+            border-radius: 4px;
+        }
+
+        .nav-link:hover {
+            color: white;
+            background-color: rgba(255, 255, 255, 0.15);
+        }
+
+        .hamburger {
+            display: none;
+            flex-direction: column;
+            gap: 5px;
+            padding: 5px;
+        }
+
+        .hamburger span {
+            display: block;
+            width: 25px;
+            height: 3px;
+            background-color: white;
+            border-radius: 2px;
+        }
+
+
+        .content-section {
+            padding: 50px 0;
+            flex-grow: 1;
+        }
+
+        .section-title {
+            text-align: center;
+            font-size: 1.8rem;
+            margin-bottom: 6px;
+        }
+
+        .section-sub {
+            text-align: center;
+            color: #888;
+            margin-bottom: 30px;
+        }
+
+
+        .card-grid {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 30px;
+        }
+
+        .card-wrap {
+            flex: 1 1 calc(33.33% - 30px);
+            min-width: 280px;
+        }
+
+
+        .card {
+            background: #fff;
+            border-radius: 16px;
+            border: 1px solid #e9ecef;
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+            overflow: hidden;
+        }
+
+        .card img {
+            width: 100%;
+            height: 280px;
+            object-fit: cover;
+            display: block;
+        }
+
+        .card-body {
+            padding: 25px;
+            display: flex;
+            flex-direction: column;
+            flex-grow: 1;
+        }
+
+        .card-header-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 8px;
+        }
+
+        .card-title {
+            color: #4388e6;
+            font-weight: 700;
+            font-size: 1.3rem;
+        }
+
+        .card-text {
+            font-size: 1.05rem;
+            color: #555;
+            line-height: 1.6;
+            flex-grow: 1;
+            margin-bottom: 20px;
+        }
+
+        .price {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: #222;
+            margin-bottom: 14px;
+        }
+
+        .price-old {
+            font-size: 0.85rem;
+            color: #aaa;
+            text-decoration: line-through;
+            font-weight: 400;
+            margin-left: 6px;
+        }
+
+
+        .badge {
+            display: inline-block;
+            padding: 3px 9px;
+            border-radius: 4px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            color: white;
+        }
+
+        .badge-new {
+            background-color: #dc3545;
+        }
+
+        .badge-sale {
+            background-color: #198754;
+        }
+
+
+        .btn {
+            display: inline-block;
+            text-align: center;
+            text-decoration: none;
+            padding: 8px 14px;
+            border-radius: 5px;
+            border: none;
+            font-size: 0.9rem;
+            width: 100%;
+        }
+
+        .btn-primary {
+            background-color: #4388e6;
+            color: #fff;
+        }
+
+        .btn-primary:hover {
+            background-color: #2e6fd4;
+        }
+
+        .btn-secondary {
+            background-color: #6c757d;
+            color: #fff;
+        }
+
+        .btn-secondary:hover {
+            background-color: #565e64;
+        }
+
+
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.55);
+            z-index: 999;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .modal-overlay:target {
+            display: flex;
+        }
+
+        .modal-box {
+            background: #fff;
+            border-radius: 10px;
+            width: 90%;
+            max-width: 500px;
+            overflow: hidden;
+        }
+
+        .modal-header {
+            background-color: #4388e6;
+            color: white;
+            padding: 14px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .modal-header h5 {
+            font-size: 1rem;
+            margin: 0;
+        }
+
+        .modal-close {
+            text-decoration: none;
+            color: white;
+            font-size: 1.3rem;
+            line-height: 1;
+        }
+
+        .modal-body {
+            padding: 20px;
+        }
+
+        .modal-body img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            border-radius: 6px;
+            margin-bottom: 14px;
+            display: block;
+        }
+
+        .modal-body p {
+            font-size: 0.9rem;
+            line-height: 1.6;
+            margin-bottom: 10px;
+        }
+
+        .modal-specs {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 7px;
+            margin-bottom: 12px;
+        }
+
+        .modal-specs span {
+            background: #f0f4ff;
+            border: 1px solid #c0d4f5;
+            border-radius: 5px;
+            padding: 3px 10px;
+            font-size: 0.78rem;
+            color: #3366cc;
+        }
+
+        .modal-footer {
+            padding: 14px 20px;
+            border-top: 1px solid #e9ecef;
+            text-align: right;
+        }
+
+
+        .site-footer {
+            background-color: #2c3136;
+            color: #adb5bd;
+            text-align: center;
+            padding: 20px 0;
+            font-size: 0.9rem;
+        }
+
+        .social-icons {
+            margin-bottom: 8px;
+        }
+
+        .social-icons a {
+            color: #adb5bd;
+            margin: 0 8px;
+            text-decoration: none;
+        }
+
+        .social-icons a:hover {
+            color: #fff;
+        }
+
+
+        @media (max-width: 992px) {
+            .card-wrap {
+
+                flex: 1 1 calc(50% - 30px);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                width: 100%;
+            }
+
+            .card-wrap {
+
+                flex: 1 1 100%;
+            }
+
+            .hamburger {
+                display: flex;
+            }
+
+            .navbar .container {
+                flex-wrap: wrap;
+            }
+
+            .navbar-nav {
+                display: none;
+                flex-direction: column;
+                width: 100%;
+                text-align: center;
+                gap: 5px;
+                padding-top: 15px;
+            }
+
+            .navbar-nav.active {
+                display: flex;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+
+    <nav class="navbar">
+        <div class="container">
+            <a class="navbar-brand" href="#">🛒 TechStore</a>
+            <div class="hamburger" id="hamburger-btn">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+            <ul class="navbar-nav" id="nav-links">
+                <li><a class="nav-link" href="#">Home</a></li>
+                <li><a class="nav-link" href="#">Products</a></li>
+                <li><a class="nav-link" href="#">About</a></li>
+                <li><a class="nav-link" href="#">Contact</a></li>
+            </ul>
+        </div>
+    </nav>
+
+
+
+    <section class="content-section">
+        <div class="container">
+            <h2 class="section-title">Our Products</h2>
+            <p class="section-sub">Top picks from TechStore</p>
+
+            <div class="card-grid">
+
+
+                <div class="card-wrap">
+                    <div class="card">
+                        <img src="https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?w=400&h=180&fit=crop"
+                            alt="Smartphone">
+                        <div class="card-body">
+                            <div class="card-header-row">
+                                <span class="card-title">Galaxy Pro X</span>
+                                <span class="badge badge-new">New</span>
+                            </div>
+                            <p class="card-text">5G smartphone with 108MP camera and AMOLED display.</p>
+                            <p class="price">₹42,999</p>
+                            <a href="#modal1" class="btn btn-primary">View Details</a>
+                        </div>
+                    </div>
+                </div>
+
+
+                <div class="card-wrap">
+                    <div class="card">
+                        <img src="https://images.unsplash.com/photo-1496181133206-80ce9b88a853?w=400&h=180&fit=crop"
+                            alt="Laptop">
+                        <div class="card-body">
+                            <div class="card-header-row">
+                                <span class="card-title">NexBook Pro 15</span>
+                                <span class="badge badge-sale">Sale</span>
+                            </div>
+                            <p class="card-text">Intel i7, 16GB RAM, 512GB SSD laptop for coders.</p>
+                            <p class="price">₹78,499 <span class="price-old">₹89,999</span></p>
+                            <a href="#modal2" class="btn btn-primary">View Details</a>
+                        </div>
+                    </div>
+                </div>
+
+
+                <div class="card-wrap">
+                    <div class="card">
+                        <img src="https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=400&h=180&fit=crop"
+                            alt="Headphones">
+                        <div class="card-body">
+                            <div class="card-header-row">
+                                <span class="card-title">SoundMax ANC</span>
+                                <span class="badge badge-new">New</span>
+                            </div>
+                            <p class="card-text">Wireless headphones with 40hr battery and noise cancellation.</p>
+                            <p class="price">₹5,999</p>
+                            <a href="#modal3" class="btn btn-primary">View Details</a>
+                        </div>
+                    </div>
+                </div>
+
+
+                <div class="card-wrap">
+                    <div class="card">
+                        <img src="https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=400&h=180&fit=crop"
+                            alt="Smartwatch">
+                        <div class="card-body">
+                            <div class="card-header-row">
+                                <span class="card-title">TimeFit Ultra</span>
+                                <span class="badge badge-sale">Sale</span>
+                            </div>
+                            <p class="card-text">Smartwatch with GPS, heart rate monitor and 7-day battery.</p>
+                            <p class="price">₹8,499 <span class="price-old">₹10,999</span></p>
+                            <a href="#modal4" class="btn btn-primary">View Details</a>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+
+
+
+
+    <div class="modal-overlay" id="modal1">
+        <div class="modal-box">
+            <div class="modal-header">
+                <h5>Galaxy Pro X — Details</h5>
+                <a href="#" class="modal-close">✕</a>
+            </div>
+            <div class="modal-body">
+                <img src="https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?w=500&h=200&fit=crop"
+                    alt="Galaxy Pro X">
+                <p>The <strong>Galaxy Pro X</strong> is our flagship 5G smartphone with cutting-edge features.</p>
+                <div class="modal-specs">
+                    <span>📱 6.7" AMOLED</span>
+                    <span>📷 108MP Camera</span>
+                    <span>🔋 5000mAh</span>
+                    <span>⚡ 5G Ready</span>
+                    <span>💾 256GB Storage</span>
+                    <span>🖥️ Android 14</span>
+                </div>
+                <p><strong>Price: ₹42,999</strong> &nbsp;<span class="badge badge-new">New</span></p>
+            </div>
+            <div class="modal-footer">
+                <a href="#" class="btn btn-secondary" style="width:auto;">Close</a>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="modal-overlay" id="modal2">
+        <div class="modal-box">
+            <div class="modal-header">
+                <h5>NexBook Pro 15 — Details</h5>
+                <a href="#" class="modal-close">✕</a>
+            </div>
+            <div class="modal-body">
+                <img src="https://images.unsplash.com/photo-1496181133206-80ce9b88a853?w=500&h=200&fit=crop"
+                    alt="NexBook Pro 15">
+                <p>The <strong>NexBook Pro 15</strong> is a professional laptop for developers and designers.</p>
+                <div class="modal-specs">
+                    <span>💻 Intel i7 12th Gen</span>
+                    <span>🧠 16GB DDR5 RAM</span>
+                    <span>💿 512GB NVMe SSD</span>
+                    <span>🖥️ 15.6" FHD IPS</span>
+                    <span>🎮 RTX 3050 GPU</span>
+                    <span>🔋 10hr Battery</span>
+                </div>
+                <p><strong>Price: ₹78,499</strong> <span class="price-old">₹89,999</span> &nbsp;<span
+                        class="badge badge-sale">Sale</span></p>
+            </div>
+            <div class="modal-footer">
+                <a href="#" class="btn btn-secondary" style="width:auto;">Close</a>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="modal-overlay" id="modal3">
+        <div class="modal-box">
+            <div class="modal-header">
+                <h5>SoundMax ANC — Details</h5>
+                <a href="#" class="modal-close">✕</a>
+            </div>
+            <div class="modal-body">
+                <img src="https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=500&h=200&fit=crop"
+                    alt="SoundMax ANC">
+                <p><strong>SoundMax ANC</strong> delivers studio-quality sound with powerful noise cancellation.</p>
+                <div class="modal-specs">
+                    <span>🎵 40hr Playback</span>
+                    <span>🔇 Active Noise Cancel</span>
+                    <span>📶 Bluetooth 5.3</span>
+                    <span>🎤 Dual Mic</span>
+                    <span>⚡ Fast Charge</span>
+                    <span>🎧 Foldable Design</span>
+                </div>
+                <p><strong>Price: ₹5,999</strong> &nbsp;<span class="badge badge-new">New</span></p>
+            </div>
+            <div class="modal-footer">
+                <a href="#" class="btn btn-secondary" style="width:auto;">Close</a>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="modal-overlay" id="modal4">
+        <div class="modal-box">
+            <div class="modal-header">
+                <h5>TimeFit Ultra — Details</h5>
+                <a href="#" class="modal-close">✕</a>
+            </div>
+            <div class="modal-body">
+                <img src="https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=500&h=200&fit=crop"
+                    alt="TimeFit Ultra">
+                <p><strong>TimeFit Ultra</strong> is a fitness smartwatch with advanced health tracking.</p>
+                <div class="modal-specs">
+                    <span>❤️ Heart Rate Monitor</span>
+                    <span>📍 Built-in GPS</span>
+                    <span>🔋 7-Day Battery</span>
+                    <span>💧 IP68 Waterproof</span>
+                    <span>🌙 Sleep Tracker</span>
+                    <span>📲 iOS & Android</span>
+                </div>
+                <p><strong>Price: ₹8,499</strong> <span class="price-old">₹10,999</span> &nbsp;<span
+                        class="badge badge-sale">Sale</span></p>
+            </div>
+            <div class="modal-footer">
+                <a href="#" class="btn btn-secondary" style="width:auto;">Close</a>
+            </div>
+        </div>
+    </div>
+
+
+
+    <footer class="site-footer">
+        <div class="container">
+            <div class="social-icons">
+                <a href="#">📘 Facebook</a>
+                <a href="#">📸 Instagram</a>
+                <a href="#">🐦 Twitter</a>
+                <a href="#">▶️ YouTube</a>
+            </div>
+            <p>&copy; 2025 TechStore. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script>
+
+        document.getElementById('hamburger-btn').onclick = function () {
+            document.getElementById('nav-links').classList.toggle('active');
+        };
+    </script>
+</body>
+
+</html>
