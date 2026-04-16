@@ -1,14 +1,14 @@
 <html>
-<title>Sum of N numbers</title>
-
 <head>
+    <title>Sum of N numbers</title>
     <style>
         body {
             background-color: lightgray;
             display: flex;
             justify-content: center;
             align-items: center;
-
+            height: 100vh;
+            margin: 0;
         }
         .container {
             background-color: lightblue;
@@ -33,7 +33,9 @@
             padding: 10px;
             background-color: orange;
             color: white;
+            border: none;
             border-radius: 6px;
+            cursor: pointer;
         }
         #result {
             margin-top: 20px;
@@ -51,7 +53,7 @@
     </div>
     <script>
         function sum() {
-            let n = document.getElementById("Nvalue").value;
+            let n = parseInt(document.getElementById("Nvalue").value);
             let sum = 0;
             for (let i = 1; i <= n; i++) {
                 sum += i;
