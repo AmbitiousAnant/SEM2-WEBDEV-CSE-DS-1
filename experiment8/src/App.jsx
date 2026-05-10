@@ -1,4 +1,4 @@
-// 1. Import the useState hook from React
+
 import { useState } from 'react';
 
 function App() {
@@ -18,7 +18,6 @@ function App() {
     setCount(0);
   };
 
-  // 4. Render the UI (JSX)
   return (
     <div className="app-container">
       <h1>Experiment 8: Counter App</h1>
@@ -27,8 +26,6 @@ function App() {
       <div className="counter-display">
         <h2>{count}</h2>
       </div>
-
-      {/* Buttons tied to the event handlers */}
       <div className="button-group">
         <button onClick={handleIncrement}>Increment (+)</button>
         <button onClick={handleDecrement}>Decrement (-)</button>
