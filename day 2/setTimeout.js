@@ -3,4 +3,4 @@ function recurringMessage() {
     setTimeout(recurringMessage, 2000);
 }
 
-recurringMessage(); \0
+recurringMessage(); 
