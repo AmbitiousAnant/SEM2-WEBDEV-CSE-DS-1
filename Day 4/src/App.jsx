@@ -11,7 +11,6 @@ function Student(props) {
     padding: "20px",
     margin: "15px auto",
     width: "350px",
-    boxShadow: "2px 2px 8px rgba(0, 0, 0, 0.1)",
   };
 
   const headingStyle = {
@@ -46,7 +45,7 @@ function Student(props) {
 function App() {
   return (
     <div>
-      <h1>Student Report Card</h1>
+      <h1 style={{textAlign:"center", color:"blue"}}>Student Report Card</h1>
 
       <Student name="Ananya Sharma" course="B.Tech Computer Science" marks={92} />
       <Student name="Rohan Mehta" course="B.Tech Data Science" marks={78} />
